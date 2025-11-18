@@ -1,0 +1,70 @@
+<resources>
+    <string name="app_name">UniHub</string>
+    <string name="server_client_id">314323090083-t8vq1e591n8tcrcmu53f0b8ieb39piqt.apps.googleusercontent.com</string>
+    <string name="frequencia_channel_name">Lembretes de presença</string>
+    <string name="frequencia_channel_description">Notificações para registrar presença ou ausência nas aulas.</string>
+    <string name="frequencia_notification_prompt">Registre sua presença ou ausência.</string>
+    <string name="frequencia_notification_schedule_format">%1$s às %2$s</string>
+    <string name="frequencia_notification_time_only_format">Horário: %1$s</string>
+    <string name="frequencia_notification_schedule_unknown">Horário não informado</string>
+    <string name="frequencia_notification_absence_with_limit">Faltas: %1$d de %2$d permitidas.</string>
+    <string name="frequencia_notification_absence_without_limit">Faltas registradas: %1$d.</string>
+    <string name="frequencia_notification_absence_only_limit">Máximo permitido: %1$d faltas.</string>
+    <string name="frequencia_notification_history_title">Presença</string>
+    <string name="frequencia_notification_history_presence">Presença registrada em %1$s.</string>
+    <string name="frequencia_notification_history_absence">Ausência registrada em %1$s.</string>
+    <string name="avaliacao_channel_name">Lembretes de avaliações</string>
+    <string name="avaliacao_channel_description">Notificações para avaliações agendadas.</string>
+    <string name="avaliacao_notification_prompt">Confira os detalhes da avaliação.</string>
+    <string name="avaliacao_notification_schedule_format">Marcada para %1$s.</string>
+    <string name="avaliacao_notification_schedule_unknown">Data e horário não informados</string>
+    <string name="avaliacao_notification_discipline_format">Disciplina: %1$s</string>
+    <string name="avaliacao_notification_default_title">Avaliação</string>
+    <string name="avaliacao_notification_button_details">Ver detalhes</string>
+    <string name="avaliacao_notification_label">AVALIAÇÃO</string>
+    <string name="tarefa_channel_name">Lembretes de tarefas</string>
+    <string name="tarefa_channel_description">Notificações para tarefas agendadas.</string>
+    <string name="tarefa_notification_prompt">Confira os detalhes da tarefa.</string>
+    <string name="tarefa_notification_schedule_format">Marcada para %1$s.</string>
+    <string name="tarefa_notification_schedule_unknown">Data e horário não informados</string>
+    <string name="tarefa_notification_board_format">Quadro: %1$s</string>
+    <string name="tarefa_notification_default_title">Tarefa</string>
+    <string name="tarefa_notification_button_details">Ver detalhes</string>
+    <string name="tarefa_notification_label">TAREFA</string>
+    <string name="share_notification_invite_channel_name">Convites de compartilhamento</string>
+    <string name="share_notification_invite_channel_description">Notificações para aceitar ou recusar convites de disciplinas compartilhadas.</string>
+    <string name="share_notification_response_channel_name">Atualizações de compartilhamento</string>
+    <string name="share_notification_response_channel_description">Notificações sobre respostas aos convites de compartilhamento.</string>
+    <string name="share_notification_invite_title">Convite para disciplina</string>
+    <string name="share_notification_response_title">Atualização de disciplina compartilhada</string>
+    <string name="share_notification_generic_title">Compartilhamento de disciplina</string>
+    <string name="share_notification_action_accept">Aceitar</string>
+    <string name="share_notification_action_reject">Recusar</string>
+    <string name="share_notification_history_title">Compartilhamento</string>
+    <string name="share_notification_history_accept">Você aceitou o compartilhamento.</string>
+    <string name="share_notification_history_reject">Você rejeitou o compartilhamento.</string>
+    <string name="share_notification_history_accept_detail">Você aceitou o compartilhamento da disciplina %1$s enviado por %2$s.</string>
+    <string name="share_notification_history_reject_detail">Você recusou o compartilhamento da disciplina %1$s enviado por %2$s.</string>
+    <string name="share_notification_history_unknown_sender">um contato</string>
+    <string name="share_notification_history_unknown_discipline">sua disciplina</string>
+    <string name="share_notification_action_session_expired">Sessão expirada. Faça login novamente para responder convites.</string>
+    <string name="share_notification_action_error">Não foi possível atualizar o convite. Tente novamente.</string>
+    <string name="notification_history_default_title">Notificação</string>
+    <string name="notification_history_load_error">Não foi possível carregar o histórico de notificações.</string>
+
+
+    <string name="contact_notification_invite_channel_name">Solicitações de contato</string>
+    <string name="contact_notification_invite_channel_description">Notificações para aceitar ou rejeitar solicitações de contato.</string>
+    <string name="contact_notification_response_channel_name">Respostas de contato</string>
+    <string name="contact_notification_response_channel_description">Notificações sobre o resultado das suas solicitações de contato.</string>
+    <string name="contact_notification_invite_title">Solicitação de contato</string>
+    <string name="contact_notification_response_title">Atualização de contato</string>
+    <string name="contact_notification_generic_title">Contato</string>
+    <string name="contact_notification_history_title">Solicitação de contato</string>
+    <string name="contact_notification_history_accept">Solicitação de contato aceita.</string>
+    <string name="contact_notification_history_reject">Solicitação de contato rejeitada.</string>
+    <string name="contact_notification_action_error">Não foi possível processar a solicitação de contato.</string>
+    <string name="instituicao_obrigatoria_message">Instituição deve ser informada para o funcionamento correto do app</string>
+
+
+</resources>

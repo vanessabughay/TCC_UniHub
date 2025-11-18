@@ -1,0 +1,42 @@
+
+services:
+  db:
+    image: postgres:15
+    container_name: unihub_db
+    environment:
+      POSTGRES_DB: unihub_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5437:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+    container_name: spring_backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+    environment: # Adicione esta seção ou adicione à existente
+      # Opção 1: Configuração de debug geral do Spring Boot (mais verbosa)
+      - DEBUG=true
+      # Opção 2: Debug específico para auto-configuração (mais focado no problema de inicialização)
+      # - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_BOOT_AUTOCONFIGURE=DEBUG
+      # --- SUAS VARIÁVEIS DE AMBIENTE EXISTENTES PARA O BANCO DE DADOS DEVEM VIR AQUI ---
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/unihub_db # Nota: 'db' é o nome do serviço do banco
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SMTP_HOST=smtp.gmail.com
+      - SMTP_PORT=587
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+      - GOOGLE_OAUTH_CLIENT_SECRET=${GOOGLE_OAUTH_CLIENT_SECRET}
+      
+
+
+volumes:
+  pgdata:
