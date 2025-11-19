@@ -91,25 +91,19 @@ class NotificacoesRepository(
             val avaliacaoInfoList = avaliacoesAtivas
                 .filter { it.receberNotificacoes }
                 .mapNotNull { avaliacao ->
-                    val disciplinaNome = avaliacao.disciplina?.nome ?: return@mapNotNull null
-                    val disciplinaId = (avaliacao.disciplina?.id as? String)?.toLongOrNull() ?: return@mapNotNull null
+
                     val avaliacaoId = avaliacao.id ?: return@mapNotNull null
 
-
-
                     val prioridade = avaliacao.prioridade
-
                     val antecedenciaEscolhida: Antecedencia? = config.avaliacoesConfig.antecedencia[prioridade]
-
                     val reminderDuration: Duration =
-                        antecedenciaEscolhida?.duration
-                            ?: Antecedencia.padrao.duration
+                        antecedenciaEscolhida?.duration ?: Antecedencia.padrao.duration
 
                     AvaliacaoNotificationScheduler.AvaliacaoInfo(
                         id = avaliacaoId,
                         descricao = avaliacao.descricao,
-                        disciplinaId = disciplinaId,
-                        disciplinaNome = disciplinaNome,
+                        disciplinaId = AvaliacaoNotificationScheduler.parseDisciplinaId(avaliacao.disciplina?.id),
+                        disciplinaNome = avaliacao.disciplina?.nome,
                         dataHoraIso = avaliacao.dataEntrega,
                         reminderDuration = reminderDuration,
                         receberNotificacoes = avaliacao.receberNotificacoes

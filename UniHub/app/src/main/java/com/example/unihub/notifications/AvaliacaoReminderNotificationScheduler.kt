@@ -66,8 +66,8 @@ class AvaliacaoNotificationScheduler(private val context: Context) {
             return
         }
 
-        val newRequestCodes = mutableSetOf<String>()
-        val baseIntent = Intent(context, AvaliacaoNotificationReceiver::class.java)
+        val uniqueSchedules = linkedMapOf<Int, Pair<AvaliacaoInfo, Long>>()
+
 
         avaliacoes
             .filter { it.receberNotificacoes }
@@ -75,23 +75,40 @@ class AvaliacaoNotificationScheduler(private val context: Context) {
                 val triggerAtMillis = computeTriggerMillis(
                     avaliacao.dataHoraIso,
                     avaliacao.reminderDuration
-                )
-                    ?: return@forEach
+                ) ?: return@forEach
+
 
                 val requestCode = buildRequestCode(avaliacao.id, triggerAtMillis)
-                newRequestCodes.add(requestCode.toString())
-
-                val intent = Intent(baseIntent).apply {
-                    putExtra(AvaliacaoNotificationReceiver.EXTRA_AVALIACAO_ID, avaliacao.id)
-                    putExtra(AvaliacaoNotificationReceiver.EXTRA_AVALIACAO_DESCRICAO, avaliacao.descricao)
-                    putExtra(AvaliacaoNotificationReceiver.EXTRA_DISCIPLINA_ID, avaliacao.disciplinaId)
-                    putExtra(AvaliacaoNotificationReceiver.EXTRA_DISCIPLINA_NOME, avaliacao.disciplinaNome)
-                    putExtra(AvaliacaoNotificationReceiver.EXTRA_AVALIACAO_DATA_HORA, avaliacao.dataHoraIso)
-                    putExtra(AvaliacaoNotificationReceiver.EXTRA_REQUEST_CODE, requestCode)
+                val current = uniqueSchedules[requestCode]
+                if (current == null || triggerAtMillis < current.second) {
+                    uniqueSchedules[requestCode] = avaliacao to triggerAtMillis
                 }
-
-                scheduleExactAlarm(requestCode, triggerAtMillis, intent)
             }
+
+        if (uniqueSchedules.isEmpty()) {
+            preferences.edit().remove(KEY_REQUEST_CODES).apply()
+            return
+        }
+
+        val newRequestCodes = mutableSetOf<String>()
+        val baseIntent = Intent(context, AvaliacaoNotificationReceiver::class.java)
+
+        uniqueSchedules.forEach { (requestCode, pair) ->
+            val (avaliacao, triggerAtMillis) = pair
+            newRequestCodes.add(requestCode.toString())
+
+            val intent = Intent(baseIntent).apply {
+                putExtra(AvaliacaoNotificationReceiver.EXTRA_AVALIACAO_ID, avaliacao.id)
+                putExtra(AvaliacaoNotificationReceiver.EXTRA_AVALIACAO_DESCRICAO, avaliacao.descricao)
+                putExtra(AvaliacaoNotificationReceiver.EXTRA_DISCIPLINA_ID, avaliacao.disciplinaId)
+                putExtra(AvaliacaoNotificationReceiver.EXTRA_DISCIPLINA_NOME, avaliacao.disciplinaNome)
+                putExtra(AvaliacaoNotificationReceiver.EXTRA_AVALIACAO_DATA_HORA, avaliacao.dataHoraIso)
+                putExtra(AvaliacaoNotificationReceiver.EXTRA_REQUEST_CODE, requestCode)
+            }
+
+            scheduleExactAlarm(requestCode, triggerAtMillis, intent)
+        }
+
 
         preferences.edit().putStringSet(KEY_REQUEST_CODES, newRequestCodes).apply()
     }
@@ -233,5 +250,11 @@ class AvaliacaoNotificationScheduler(private val context: Context) {
         }
         private fun keyForPriority(priority: Prioridade): String =
             KEY_ANTECEDENCIA_PREFIX + priority.name
+
+        fun parseDisciplinaId(value: Any?): Long? = when (value) {
+            is Number -> value.toLong()
+            is String -> value.toLongOrNull()
+            else -> null
+        }
     }
 }
