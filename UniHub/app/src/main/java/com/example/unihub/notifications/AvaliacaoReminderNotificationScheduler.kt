@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 // MUDANÇA AQUI: Importa o java.time.Duration
+import com.example.unihub.data.model.Antecedencia
 import com.example.unihub.data.model.Prioridade
 import java.time.Duration
 import java.time.Instant
@@ -34,6 +35,24 @@ class AvaliacaoNotificationScheduler(private val context: Context) {
 
     private val preferences =
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+
+    fun persistAntecedencias(antecedencias: Map<Prioridade, Antecedencia>) {
+        val editor = preferences.edit()
+        antecedencias.forEach { (prioridade, antecedencia) ->
+            editor.putString(keyForPriority(prioridade), antecedencia.name)
+        }
+        editor.apply()
+    }
+
+    fun reminderDurationForPriority(priority: Prioridade?): Duration {
+        val antecedencia = priority?.let { prioridade ->
+            preferences.getString(keyForPriority(prioridade), null)
+                ?.let { stored ->
+                    runCatching { Antecedencia.valueOf(stored) }.getOrNull()
+                }
+        }
+        return (antecedencia ?: Antecedencia.padrao).duration
+    }
 
     fun scheduleNotifications(avaliacoes: List<AvaliacaoInfo>) {
         val manager = alarmManager ?: return
@@ -146,6 +165,8 @@ class AvaliacaoNotificationScheduler(private val context: Context) {
     companion object {
         private const val PREFS_NAME = "avaliacao_notification_prefs"
         private const val KEY_REQUEST_CODES = "request_codes"
+        private const val KEY_ANTECEDENCIA_PREFIX = "antecedencia_"
+
 
         private val LOCAL_DATE_TIME_FORMATTERS = listOf(
             DateTimeFormatter.ISO_LOCAL_DATE_TIME,
@@ -208,14 +229,9 @@ class AvaliacaoNotificationScheduler(private val context: Context) {
         internal fun immutableFlag(): Int = FrequenciaNotificationScheduler.immutableFlag()
 
         fun defaultReminderDuration(priority: Prioridade?): Duration {
-            return when (priority) {
-                Prioridade.MUITO_BAIXA -> Duration.ofHours(3)
-                Prioridade.BAIXA -> Duration.ofHours(12)
-                Prioridade.MEDIA -> Duration.ofDays(1)
-                Prioridade.ALTA -> Duration.ofDays(2)
-                Prioridade.MUITO_ALTA -> Duration.ofDays(3)
-                null -> Duration.ofDays(1)
-            }
+            return Antecedencia.padrao.duration
         }
+        private fun keyForPriority(priority: Prioridade): String =
+            KEY_ANTECEDENCIA_PREFIX + priority.name
     }
 }

@@ -32,7 +32,9 @@ class NotificacoesRepository(
 
     suspend fun carregarConfig(): NotificacoesConfig {
         TokenManager.requireUsuarioId()
-        return api.carregar().normalized()
+        return api.carregar().normalized().also { config ->
+            avaliacaoScheduler.persistAntecedencias(config.avaliacoesConfig.antecedencia)
+        }
     }
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
@@ -42,6 +44,8 @@ class NotificacoesRepository(
         // 1. Persiste a nova configuração no backend real
         val payload = config.normalized()
         val salvo = api.salvar(payload).normalized()
+        avaliacaoScheduler.persistAntecedencias(salvo.avaliacoesConfig.antecedencia)
+
 
         // 2. Re-agenda as notificações com base na nova configuração
         reagendarTodasNotificacoes(salvo)
@@ -50,6 +54,9 @@ class NotificacoesRepository(
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     private suspend fun reagendarTodasNotificacoes(config: NotificacoesConfig) {
+
+        avaliacaoScheduler.persistAntecedencias(config.avaliacoesConfig.antecedencia)
+
 
         // *** Lógica de Presença/Aula ***
         if (config.notificacaoDePresenca) {
@@ -96,7 +103,7 @@ class NotificacoesRepository(
 
                     val reminderDuration: Duration =
                         antecedenciaEscolhida?.duration
-                            ?: AvaliacaoNotificationScheduler.defaultReminderDuration(prioridade)
+                            ?: Antecedencia.padrao.duration
 
                     AvaliacaoNotificationScheduler.AvaliacaoInfo(
                         id = avaliacaoId,
