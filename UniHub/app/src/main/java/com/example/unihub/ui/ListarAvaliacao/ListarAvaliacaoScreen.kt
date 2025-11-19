@@ -155,7 +155,7 @@ fun ListarAvaliacaoScreen(
                 disciplinaId = AvaliacaoNotificationScheduler.parseDisciplinaId(avaliacao.disciplina?.id),
                 disciplinaNome = avaliacao.disciplina?.nome,
                 dataHoraIso = avaliacao.dataEntrega,
-                reminderDuration = scheduler.reminderDurationForPriority(avaliacao.prioridade),
+                prioridade = avaliacao.prioridade,
 
                 receberNotificacoes = avaliacao.receberNotificacoes
             )

@@ -105,7 +105,8 @@ class NotificacoesRepository(
                         disciplinaId = AvaliacaoNotificationScheduler.parseDisciplinaId(avaliacao.disciplina?.id),
                         disciplinaNome = avaliacao.disciplina?.nome,
                         dataHoraIso = avaliacao.dataEntrega,
-                        reminderDuration = reminderDuration,
+                        prioridade = prioridade,
+                        overrideReminderDuration = reminderDuration,
                         receberNotificacoes = avaliacao.receberNotificacoes
                     )
                 }

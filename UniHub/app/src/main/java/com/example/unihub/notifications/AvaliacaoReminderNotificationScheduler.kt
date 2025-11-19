@@ -26,7 +26,8 @@ class AvaliacaoNotificationScheduler(private val context: Context) {
         val disciplinaId: Long?,
         val disciplinaNome: String?,
         val dataHoraIso: String?,
-        val reminderDuration: Duration,
+        val prioridade: Prioridade?,
+        val overrideReminderDuration: Duration? = null,
         val receberNotificacoes: Boolean
     )
 
@@ -72,9 +73,11 @@ class AvaliacaoNotificationScheduler(private val context: Context) {
         avaliacoes
             .filter { it.receberNotificacoes }
             .forEach { avaliacao ->
+                val reminderDuration = avaliacao.overrideReminderDuration
+                    ?: reminderDurationForPriority(avaliacao.prioridade)
                 val triggerAtMillis = computeTriggerMillis(
                     avaliacao.dataHoraIso,
-                    avaliacao.reminderDuration
+                    reminderDuration
                 ) ?: return@forEach
 
 
@@ -245,9 +248,7 @@ class AvaliacaoNotificationScheduler(private val context: Context) {
 
         internal fun immutableFlag(): Int = FrequenciaNotificationScheduler.immutableFlag()
 
-        fun defaultReminderDuration(priority: Prioridade?): Duration {
-            return Antecedencia.padrao.duration
-        }
+
         private fun keyForPriority(priority: Prioridade): String =
             KEY_ANTECEDENCIA_PREFIX + priority.name
 
