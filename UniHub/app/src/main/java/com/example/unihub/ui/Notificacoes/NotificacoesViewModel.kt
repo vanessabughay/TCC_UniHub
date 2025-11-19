@@ -79,9 +79,9 @@ class NotificacoesViewModel(
     fun setAvaliacoesAtivas(ativo: Boolean) = update { it.copy(avaliacoesAtivas = ativo) }
 
     fun setAntecedencia(p: Prioridade, a: Antecedencia) = update {
-        val novoMapa = it.avaliacoesConfig.periodicidade.toMutableMap()
+        val novoMapa = it.avaliacoesConfig.antecedencia.toMutableMap()
         novoMapa[p] = a
-        it.copy(avaliacoesConfig = AvaliacoesConfig(periodicidade = novoMapa))
+        it.copy(avaliacoesConfig = AvaliacoesConfig(antecedencia = novoMapa))
     }
 
     fun setCompartilhamentoDisciplina(ativo: Boolean) = update { it.copy(compartilhamentoDisciplina = ativo) }

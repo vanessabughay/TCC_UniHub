@@ -334,10 +334,10 @@ private fun Content(
 
                     if (state.edit.avaliacoesAtivas) {
                         Spacer(Modifier.height(16.dp))
-                        Text("Periodicidade", style = MaterialTheme.typography.bodyLarge, color = Color(0xFF4A4E52))
+                        Text("Antecedência", style = MaterialTheme.typography.bodyLarge, color = Color(0xFF4A4E52))
                         Spacer(Modifier.height(10.dp))
 
-                        val mapa = state.edit.avaliacoesConfig.periodicidade
+                        val mapa = state.edit.avaliacoesConfig.antecedencia
                         val opcoes = Antecedencia.todas.map { it.label }
 
                         @Composable
