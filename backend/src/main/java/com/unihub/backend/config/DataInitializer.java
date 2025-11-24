@@ -215,8 +215,7 @@ public class DataInitializer {
         }
 
         criarContatoSeNaoExistir(usuario, "Rafaella", "rafaella@email.com", false);
-        criarContatoSeNaoExistir(usuario, "Victoria", "victoria@email.com", true);
-        criarContatoSeNaoExistir(usuario, "Paulo", "paulo@email.com", true);
+    
 
         criarContatoSeNaoExistir(usuario, "Carla Mendes", "carla.mendes@email.com", false);
         criarContatoSeNaoExistir(usuario, "Daniel Souza", "daniel.souza@email.com", false);
@@ -514,8 +513,7 @@ public class DataInitializer {
         Contato oliviaBarbosa = criarContatoSeNaoExistir(usuario, "Olívia Barbosa", "olivia.barbosa@email.com",  false);
 
         seedTadsDisciplinas(usuario);
-        criarContatoSeNaoExistir(usuario, "Vanessa", "vanessa@email.com",  true);
-
+        
         seedConfiguracoesComunicacao(usuario);
         seedAvaliacaoEAnotacao(usuario);
     }
